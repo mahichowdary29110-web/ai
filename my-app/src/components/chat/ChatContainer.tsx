@@ -1,3 +1,5 @@
+'use client';
+
 import { ChatHeader } from './ChatHeader';
 import { ChatMessages } from './ChatMessages';
 import { ChatInput } from './ChatInput';
@@ -7,7 +9,7 @@ export function ChatContainer() {
   const { sendMessage, retryMessage, isLoading, activeConversation } = useChat();
 
   return (
-    <div className="flex-1 flex flex-col h-screen">
+    <div style={{ marginLeft: '260px', display: 'flex', flexDirection: 'column', height: '100vh', backgroundColor: '#ffffff' }}>
       <ChatHeader />
       <ChatMessages
         messages={activeConversation?.messages || []}
@@ -16,7 +18,7 @@ export function ChatContainer() {
       <ChatInput
         onSend={sendMessage}
         disabled={isLoading}
-        placeholder="Type your message..."
+        placeholder="Ask anything"
       />
     </div>
   );

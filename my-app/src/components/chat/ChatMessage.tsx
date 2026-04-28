@@ -1,8 +1,7 @@
+'use client';
+
 import { memo } from 'react';
-import { User, Bot, AlertCircle } from 'lucide-react';
 import { Message } from '@/types';
-import { cn } from '@/utils/helpers';
-import { MessageSkeleton } from '@/components/ui/Skeleton';
 
 interface ChatMessageProps {
   message: Message;
@@ -13,54 +12,101 @@ export const ChatMessage = memo(({ message, onRetry }: ChatMessageProps) => {
   const isUser = message.role === 'user';
 
   return (
-    <div
-      className={cn(
-        'flex gap-4 p-6',
-        isUser ? 'bg-transparent' : 'bg-gray-50 dark:bg-gray-800/50'
-      )}
-    >
-      <div
-        className={cn(
-          'flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center',
-          isUser
-            ? 'bg-blue-600 text-white'
-            : 'bg-green-600 text-white'
+    <div style={{
+      display: 'flex',
+      gap: '16px',
+      padding: '24px 0',
+      borderBottom: '1px solid #f3f4f6'
+    }}>
+      {/* Avatar */}
+      <div style={{
+        width: '32px',
+        height: '32px',
+        borderRadius: '50%',
+        flexShrink: 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: isUser ? '#10a37f' : '#ab68ff',
+        color: '#ffffff',
+        fontSize: '14px',
+        fontWeight: '600'
+      }}>
+        {isUser ? (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        ) : (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L15 8L12 14L9 8L12 2Z"/>
+            <circle cx="12" cy="18" r="3"/>
+          </svg>
         )}
-      >
-        {isUser ? <User className="w-5 h-5" /> : <Bot className="w-5 h-5" />}
       </div>
 
-      <div className="flex-1 space-y-2 min-w-0">
-        <div className="font-semibold text-sm text-gray-900 dark:text-gray-100">
-          {isUser ? 'You' : 'AI Assistant'}
+      {/* Content */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{
+          fontSize: '14px',
+          fontWeight: '600',
+          color: '#111827',
+          marginBottom: '8px'
+        }}>
+          {isUser ? 'You' : 'ChatGPT'}
         </div>
 
-        {message.isStreaming ? (
-          <MessageSkeleton />
-        ) : message.error ? (
-          <div className="space-y-3">
-            <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
-              <AlertCircle className="w-4 h-4" />
-              <span className="text-sm">Failed to generate response</span>
+        {message.error ? (
+          <div>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              color: '#ef4444',
+              fontSize: '14px',
+              marginBottom: '8px'
+            }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              Failed to generate response
             </div>
             {onRetry && (
               <button
                 onClick={onRetry}
-                className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                style={{
+                  fontSize: '14px',
+                  color: '#2563eb',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  textDecoration: 'underline',
+                  padding: 0
+                }}
               >
                 Retry
               </button>
             )}
           </div>
         ) : (
-          <div className="prose dark:prose-invert max-w-none">
-            <p className="text-gray-900 dark:text-gray-100 whitespace-pre-wrap break-words">
-              {message.content}
-            </p>
+          <div style={{
+            fontSize: '15px',
+            lineHeight: '1.7',
+            color: '#374151',
+            whiteSpace: 'pre-wrap',
+            wordBreak: 'break-word'
+          }}>
+            {message.content}
           </div>
         )}
 
-        <div className="text-xs text-gray-500 dark:text-gray-400">
+        <div style={{
+          fontSize: '12px',
+          color: '#9ca3af',
+          marginTop: '8px'
+        }}>
           {message.timestamp.toLocaleTimeString('en-US', {
             hour: '2-digit',
             minute: '2-digit',

@@ -1,79 +1,101 @@
-import { Moon, Sun, LogOut, Settings } from 'lucide-react';
-import { useThemeStore } from '@/store/themeStore';
+'use client';
+
 import { useChatStore } from '@/store/chatStore';
-import { Dropdown } from '@/components/ui/Dropdown';
-import { Button } from '@/components/ui/Button';
-import { chatConfig } from '@/config';
-import { ChatType, ModelType } from '@/types';
 
 export function ChatHeader() {
-  const { theme, toggleTheme } = useThemeStore();
-  const { selectedChatType, selectedModel, setChatType, setModel, user, logout } = useChatStore();
+  const { selectedModel } = useChatStore();
 
   return (
-    <header className="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-6 py-4">
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-4 flex-1">
-          <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-            AI Chat
-          </h1>
-
-          <div className="hidden md:flex items-center gap-3">
-            <Dropdown
-              options={chatConfig.chatTypes}
-              value={selectedChatType}
-              onChange={(value) => setChatType(value as ChatType)}
-              className="w-48"
-            />
-
-            <Dropdown
-              options={chatConfig.models}
-              value={selectedModel}
-              onChange={(value) => setModel(value as ModelType)}
-              className="w-48"
-            />
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          {user && (
-            <div className="hidden sm:flex items-center gap-3 px-3 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg">
-              <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-                {user.name.charAt(0).toUpperCase()}
-              </div>
-              <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                {user.name}
-              </span>
-            </div>
-          )}
-
-          <Button variant="ghost" size="md" onClick={toggleTheme}>
-            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-          </Button>
-
-          {user && (
-            <Button variant="ghost" size="md" onClick={logout}>
-              <LogOut className="w-5 h-5" />
-            </Button>
-          )}
-        </div>
+    <header style={{
+      height: '60px',
+      borderBottom: '1px solid #e5e7eb',
+      backgroundColor: '#ffffff',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: '0 24px',
+      position: 'sticky',
+      top: 0,
+      zIndex: 10
+    }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px'
+      }}>
+        <h1 style={{
+          fontSize: '16px',
+          fontWeight: '600',
+          color: '#111827',
+          margin: 0
+        }}>ChatGPT</h1>
+        <button style={{
+          padding: '0',
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center'
+        }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
       </div>
 
-      {/* Mobile dropdowns */}
-      <div className="md:hidden flex items-center gap-3 mt-4">
-        <Dropdown
-          options={chatConfig.chatTypes}
-          value={selectedChatType}
-          onChange={(value) => setChatType(value as ChatType)}
-          className="flex-1"
-        />
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px'
+      }}>
+        <div style={{
+          padding: '6px 12px',
+          backgroundColor: '#000000',
+          color: '#ffffff',
+          borderRadius: '6px',
+          fontSize: '13px',
+          fontWeight: '500'
+        }}>Talking:</div>
+        
+        <button style={{
+          width: '32px',
+          height: '32px',
+          borderRadius: '50%',
+          border: 'none',
+          backgroundColor: 'transparent',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          transition: 'background-color 0.2s'
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
+        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111827" strokeWidth="2">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </button>
 
-        <Dropdown
-          options={chatConfig.models}
-          value={selectedModel}
-          onChange={(value) => setModel(value as ModelType)}
-          className="flex-1"
-        />
+        <button style={{
+          width: '32px',
+          height: '32px',
+          borderRadius: '50%',
+          border: 'none',
+          backgroundColor: 'transparent',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          transition: 'background-color 0.2s'
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
+        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111827" strokeWidth="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </button>
       </div>
     </header>
   );

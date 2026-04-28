@@ -1,10 +1,10 @@
 'use client';
 
+import { useChatStore } from '@/store/chatStore';
+import { Login } from '@/components/auth/Login';
+import { appConfig } from '@/config';
 import { Sidebar } from '@/components/sidebar/Sidebar';
 import { ChatContainer } from '@/components/chat/ChatContainer';
-import { Login } from '@/components/auth/Login';
-import { useChatStore } from '@/store/chatStore';
-import { appConfig } from '@/config';
 
 export function App() {
   const isAuthenticated = useChatStore((state) => state.isAuthenticated);
@@ -14,7 +14,7 @@ export function App() {
   }
 
   return (
-    <div className="flex h-screen bg-white dark:bg-gray-900">
+    <div style={{ display: 'flex', height: '100vh', backgroundColor: '#ffffff', overflow: 'hidden' }}>
       <Sidebar />
       <ChatContainer />
     </div>
